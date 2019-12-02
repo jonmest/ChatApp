@@ -1,5 +1,11 @@
 {
     "host": "http://localhost:3000",
     "dbURI": "mongodb+srv://jon:hej123@cluster0-z1lrf.mongodb.net/test",
-    "sessionSecret": "catsloveexpress"
+    "sessionSecret": "catsloveexpress",
+    "github": {
+        "clientID": "2275884f115c7e276058",
+        "clientSecret": "e2c7d10de4dee79de91f5d4fe269db6ed5b29443",
+        "callbackURL": "//localhost:3000/auth/github/callback",
+        "profileFields": ["id", "displayName", "photos"]
+    }
 }

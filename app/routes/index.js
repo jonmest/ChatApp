@@ -1,5 +1,6 @@
 'use strict'
 const router = require('express').Router()
+const passport = require('passport')
 
 router.get('/', (req, res, next) => {
     res.render('login')
@@ -21,6 +22,15 @@ router.get('/setsession', (req, res, next) => {
     req.session.favColor = "RED!"
     res.send("Session: set")
 })
+
+router.get('/auth/github', passport.authenticate('github'))
+router.get('/auth/github/callback', 
+  passport.authenticate('github', { failureRedirect: '/' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/rooms');
+  });
+
 
 /**
  * Not found
