@@ -7,3 +7,5 @@ WEBSOCKETS
 LOGGER
 
 HELPER
+
+mongodb+srv://jon:<password>@cluster0-z1lrf.mongodb.net/test?retryWrites=true&w=majority

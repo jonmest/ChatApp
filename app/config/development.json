@@ -1,4 +1,5 @@
 {
     "host": "http://localhost:3000",
-    "dbUri": "mongodb+srv://jon:hej123@cluster0-z1lrf.mongodb.net/test?retryWrites=true&w=majority"
+    "dbURI": "mongodb+srv://jon:hej123@cluster0-z1lrf.mongodb.net/test",
+    "sessionSecret": "catsloveexpress"
 }

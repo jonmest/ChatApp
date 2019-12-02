@@ -1,7 +1,11 @@
-'use strict'
-const config = require('..config')
-const Mongoose = require('mongoose').connect(config.dbURI)
+const config = require('../config');
+const Mongoose = require('mongoose');
 
-Mongoose.connection.on('error', error => {
-    console.log('MongoDB Error: ', error)
-})
+Mongoose.connect(config.dbURI);
+Mongoose.connection.once('open',()=>{
+    console.log('Connected to db');
+});
+
+module.exports = {
+    Mongoose
+}

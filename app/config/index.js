@@ -3,7 +3,8 @@
 if (process.env.NODE_ENV === 'production') {
     module.exports = {
         host: process.env.host || "",
-        dbUri: process.env.dbURI
+        dbUri: process.env.dbURI,
+        sessionSecret: process.env.sessionSecret
     }
 
 } else {
