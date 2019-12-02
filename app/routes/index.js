@@ -17,6 +17,11 @@ router.get('/getsession', (req, res, next) => {
     res.send('My favourite color: ' + req.session.favColor)
 })
 
+router.get('/setsession', (req, res, next) => {
+    req.session.favColor = "RED!"
+    res.send("Session: set")
+})
+
 /**
  * Not found
  */
