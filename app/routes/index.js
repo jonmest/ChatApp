@@ -1,18 +1,23 @@
 'use strict'
 const router = require('express').Router()
 const passport = require('passport')
+const h = require('../helpers')
 
 router.get('/', (req, res, next) => {
     res.render('login')
 })
 
-router.get('/rooms', (req, res, next) => {
-    res.render('rooms')
-})
+router.get('/rooms', [h.isAuthenticated, (req, res, next) => {
+    res.render('rooms', {
+        user: req.user
+    })
+}])
 
-router.get('/chat', (req, res, next) => {
-    res.render('chat')
-})
+router.get('/chat', [h.isAuthenticated, (req, res, next) => {
+    res.render('chat', {
+        user: req.user
+    })
+}])
 
 router.get('/getsession', (req, res, next) => {
     res.send('My favourite color: ' + req.session.favColor)
@@ -29,7 +34,12 @@ router.get('/auth/github/callback',
   function(req, res) {
     // Successful authentication, redirect home.
     res.redirect('/rooms');
-  });
+  })
+
+router.get('/logout', (req, res, next) => {
+    req.logout()
+    res.redirect('/')
+})
 
 
 /**
