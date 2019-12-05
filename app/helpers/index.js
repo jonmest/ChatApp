@@ -69,6 +69,54 @@ function randomHex () {
     return crypto.randomBytes(24).toString('hex')
 }
 
+function addUserToRoom (allrooms, data, socket) {
+    let getRoom = findRoomById(allrooms, data.roomID)
+    if (getRoom !== undefined) {
+        let userID = socket.request.session.passport.user
+        let checkUser = getRoom.users.findIndex((element, index, array) => {
+            if (element.userID === userID) return true
+            else return false
+        })
+
+        // If users already present, remove him first
+        if (checkUser > -1) {
+            getRoom.users.splice(checkUser, 1)
+        }
+
+        // Push user into room's user array
+        getRoom.users.push({
+            socketID: socket.id,
+            userID,
+            user: data.user,
+            userPic: data.userPic
+        })
+
+        socket.join(data.roomID)
+
+        return getRoom
+
+
+    }
+    }
+
+function removeUserFromRoom (allrooms, socket) {
+    for (let room of allrooms) {
+        // Find user
+        let findUser = room.users.findIndex((element, index, array) => {
+            if (element.socketID === socket.id) {
+                return true
+            } else {
+                return false
+            }
+        })
+
+        if (findUser) {
+            socket.leave(room.roomID)
+            room.users.splice(findUser, 1)
+            return room
+        }
+    }
+}
 module.exports = {
     findOne,
     createNewUser,
@@ -77,4 +125,7 @@ module.exports = {
     findRoomByName,
     randomHex,
     findRoomById,
+    addUserToRoom,
+    removeUserFromRoom
+
 }

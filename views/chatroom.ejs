@@ -15,7 +15,43 @@
 			let roomID = '<% roomID %>'
 			let user = '<%= user.fullName %>'
 			let userPic = '<%= user.profilePic %>'
+			let chatInput = $("input[name='userInput']")
+			console.log(chatInput)
+			let chatMessagesDiv  = $('.chatMessages')
 
+			socket.on('connect', () => {
+				socket.emit('join', {
+					roomID,
+					user,
+					userPic
+				})
+			})
+
+			let updateFeed = (userPic, message) => {
+				let template = `<div class="chatBlock"> <div class="userPic"><img src="${userPic}">${user}</div>
+					<div class="chatMsg">${ message }</div></div>`
+				$(template).hide().prependTo(chatMessagesDiv).slideDown(100)
+			}
+
+			chatInput.on('keyup', function (event) {
+				event.preventDefault()
+				let messageField = $(this)
+				if (event.which === 13 && messageField.val() !== '') {
+					socket.emit('newMessage'), {
+						roomID,
+						user,
+						userPic,
+						message: messageField.value
+					}
+					updateFeed(userPic, messageField.val())
+					messageField.val('')
+				} 
+			})
+
+			socket.on('inMessage', data => {
+				let parsedData = JSON.parse(data)
+				updateFeed(parsedData.userPic, parsedData.message)
+			})
 		})
 	</script>
 

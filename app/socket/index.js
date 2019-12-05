@@ -33,4 +33,24 @@ module.exports = (io, app) => {
             socket.broadcast.emit('chatRoomsList', JSON.stringify(allrooms))
         })
     })
+
+    io.of('/chatter').on('connection', socket => {
+        socket.on('join', data => {
+            let usersList = h.addUserToRoom(allrooms, data, socket)
+            
+        })
+
+        socket.on('disconnect', () => {
+            let room = h.removeUserFromRoom(allrooms, socket)
+            socket.broadcast.to(room.roomID).emit('updateUsersList', JSON.stringify(room.users))
+        })
+
+        socket.on('newMessage', data => {
+            try {
+                socket.to(data.roomID).emit('inMessage', JSON.stringify(data))
+            } catch (e) {
+                console.log(e)
+            }
+        })
+    })
 }
