@@ -12,6 +12,6 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use('/', chatTap.router)
 
-app.listen(app.get('port'), () => {
+chatTap.ioServer(app).listen(app.get('port'), () => {
     console.log()
 })

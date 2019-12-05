@@ -5,6 +5,46 @@
 	<title>ChatCat - Rooms</title>
 	<link rel="stylesheet" href="./css/roomsStyles.css">
 	<script src="/js/jquery-2.1.4.min.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script>
+	'use strict'
+	$(() => {
+		let socket = io('<%= host %>' + '/roomslist')
+		const newRoomInput = document.querySelector('#createBtn')
+
+		function renderChatRooms (chatrooms) {
+			const roomsListContainer = document.querySelector('#roomsListUL')
+			let listFragment = document.createDocumentFragment()
+
+			for (let item of chatrooms) {
+				const a = document.createElement('a')
+				a.href = `chat/${item.roomID}`
+
+				const li = document.createElement('li')
+				li.textContent = item.room
+
+				a.appendChild(li)
+				listFragment.appendChild(a)
+			}
+
+			roomsListContainer.innerHTML = ''
+			roomsListContainer.appendChild(listFragment)
+		}
+		socket.emit('getChatrooms')
+		socket.on('chatRoomsList', chatrooms => {
+			renderChatRooms(JSON.parse(chatrooms))
+		})
+
+		document.querySelector('#createBtn').addEventListener('click', event => {
+			const input = document.querySelector('#newRoomInput')
+			if (input.value.length > 0) {
+				socket.emit('createNewRoom', input.value)
+				input.value = ''
+			}
+		} )
+
+	})
+	</script>
 </head>
 <body>
 	<div class="container">
@@ -17,7 +57,7 @@
 			<a href="/logout" id="logOutBtn">Logout</a>
 		</div>
 		<div class="controls">
-			<input type="text" name="roomName" placeholder="Create a new Chatroom">
+			<input type="text" name="roomName" id="newRoomInput" placeholder="Create a new Chatroom">
 			<a href="#" id="createBtn">Create</a>
 		</div>
 		<div class="roomsListDiv">

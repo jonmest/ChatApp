@@ -2,6 +2,7 @@
 const router = require('express').Router()
 const passport = require('passport')
 const h = require('../helpers')
+const config = require('../config')
 
 router.get('/', (req, res, next) => {
     res.render('login')
@@ -9,13 +10,15 @@ router.get('/', (req, res, next) => {
 
 router.get('/rooms', [h.isAuthenticated, (req, res, next) => {
     res.render('rooms', {
-        user: req.user
+        user: req.user,
+        host: config.host
     })
 }])
 
 router.get('/chat', [h.isAuthenticated, (req, res, next) => {
-    res.render('chat', {
-        user: req.user
+    res.render('chatroom', {
+        user: req.user,
+        host: config.host
     })
 }])
 

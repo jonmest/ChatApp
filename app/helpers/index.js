@@ -1,4 +1,5 @@
 const db = require('../db')
+const crypto = require('crypto')
 
 // Find a single user based on a key
 function findOne (profileID) {
@@ -43,9 +44,26 @@ function isAuthenticated (req, res, next) {
     }
 }
 
+function findRoomByName (allrooms, room) {
+    const findRoom = allrooms.findIndex((element, index, array) => {
+        if (element.room === room) {
+            return true
+        } else {
+            return false
+        }
+    })
+    return findRoom > -1 ? true : false
+}
+
+function randomHex () {
+    return crypto.randomBytes(24).toString('hex')
+}
+
 module.exports = {
     findOne,
     createNewUser,
     findById,
-    isAuthenticated
+    isAuthenticated,
+    findRoomByName,
+    randomHex
 }
