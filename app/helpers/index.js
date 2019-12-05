@@ -55,6 +55,16 @@ function findRoomByName (allrooms, room) {
     return findRoom > -1 ? true : false
 }
 
+function findRoomById (allrooms, roomID) {
+    return allrooms.find((element, index, array) => {
+        if (element.roomID === roomID) {
+            return true
+        } else {
+            return false
+        }
+    })
+}
+
 function randomHex () {
     return crypto.randomBytes(24).toString('hex')
 }
@@ -65,5 +75,6 @@ module.exports = {
     findById,
     isAuthenticated,
     findRoomByName,
-    randomHex
+    randomHex,
+    findRoomById,
 }

@@ -15,11 +15,19 @@ router.get('/rooms', [h.isAuthenticated, (req, res, next) => {
     })
 }])
 
-router.get('/chat', [h.isAuthenticated, (req, res, next) => {
-    res.render('chatroom', {
-        user: req.user,
-        host: config.host
-    })
+router.get('/chat/:id', [h.isAuthenticated, (req, res, next) => {
+    // Find a chatroom with given ID
+    const getRoom = h.findRoomById(req.app.locals.chatRooms, req.params.id)
+    if (getRoom === undefined) {
+        return next()
+    } else {
+        res.render('chatroom', {
+            user: req.user,
+            host: config.host,
+            room: getRoom.room,
+            roomID: getRoom.roomID
+        })
+    }
 }])
 
 router.get('/getsession', (req, res, next) => {
