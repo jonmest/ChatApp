@@ -3,7 +3,8 @@
 <head>
 	<meta charset="UTF-8">
 	<title>ChatCat - <%= room %></title>
-	<link rel="stylesheet" href="/css/chatroomStyles.css">
+<!--	<link rel="stylesheet" href="/css/chatroomStyles.css">-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
 	<script src="/js/jquery-2.1.4.min.js"></script>
 	<script src="/socket.io/socket.io.js"></script>
 
@@ -28,8 +29,25 @@
 			})
 
 			let updateFeed = (userPic, message) => {
-				let template = `<div class="chatBlock"> <div class="userPic"><img src="${userPic}">${user}</div>
-					<div class="chatMsg">${ message }</div></div>`
+				let template = `
+				<div class="box has-background-grey-lighter">
+              <article class="media">
+
+                <div class="media-content">
+                  <div class="content">
+                    <span>
+                          <strong id="displayName">${user}</strong>
+                  </span>
+
+                    <p id="messageText">
+                      
+							${ message }                    </p>
+                  </div>
+
+                </div>
+              </article>
+            </div>
+`
 				$(template).hide().prependTo(chatMessagesDiv).slideDown(100)
 			}
 
@@ -57,39 +75,43 @@
 
 </head>
 <body>
+		<section class="section">
+				<div class="container">
+				  <h1 class="title">
+						<%= room %>				  </h1>
+				  <p class="subtitle">
+					ChatCAT Channel | <%= user.fullName %>
+
+				  </p>
+				  <div class="card">
+						<header class="card-header">
+
+										<a class="card-footer-item" href="/rooms" id="roomsBtn">Rooms</a>
+										<a class="card-footer-item" href="/logout" id="logOutBtn">Logout</a>
+									
+						</header>
+
+						</div>
+
+					  </div>
+				</div>
+			  </section>
 	<div class="container">
 		<div class="titlePanel">
-			<h1>ChatCAT | <%= room %></h1>
+			<h1></h1>
 		</div>
-		<div class="controls">
-			<div class="userPicHolder"><img src="<%= user.profilePic %>" alt="John Doe"></div>
-			<p class="userName"><%= user.fullName %></p>
-			<a href="/rooms" id="roomsBtn">Rooms</a>
-			<a href="/logout" id="logOutBtn">Logout</a>
-		</div>
+		<section class="section">
 		<div class="chatListDiv">
 			<div class="chatMessagesPanel">
-				<div class="chatMessages">
-				<!-- Loop this for chat messages -->
-				<div class="chatBlock">
-					<div class="userPic"><img src="./img/user.jpg"></div>
-					<div class="chatMsg">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti perferendis eius aut nesciunt necessitatibus ad nulla, qui sequi, id nam. Possimus odit aut nisi veritatis amet distinctio id officiis ipsam!</div>
-				</div>					
-				<!-- loop end -->
+				<div style="height: 400px; overflow-y: scroll; "class="chatMessages">
+				
 				</div>
+			</section>
 				<div class="typePanel">
-					<input type="text" name="userInput" placeholder="Type here and press enter">
-					<a href="#" id="uploadFile" class="fileUploadBtn">Photo</a>
+					<input type="text" class="input is-primary" name="userInput" placeholder="Type here and press enter">
 				</div>
 			</div>
-			<div class="chatUsers">
-			<!-- Loop this for chat users -->
-				<div class="userBlock">
-					<div class="userPic"><img src="<%= user.profilePic %>" alt="<%= user.fullName %>"></div>
-					<div class="cuserName"><%= user.fullName %></div>
-				</div>
-			<!-- loop end -->
-			</div>
+
 		</div>
 	</div>
 </body>
